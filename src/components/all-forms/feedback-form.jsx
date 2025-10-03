@@ -129,10 +129,9 @@ const FeedbackForm = () => {
                           <Textarea
                             {...field}
                             {...accessibility}
-                            rows={3}
                             disabled={form.formState.isSubmitting}
                             placeholder="Share your feedback here..."
-                            className="min-h-auto"
+                            className="min-h-36"
                           />
                           <FieldError className="small" />
                         </>
