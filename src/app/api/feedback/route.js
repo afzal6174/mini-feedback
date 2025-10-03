@@ -51,10 +51,7 @@ export async function GET() {
     const feedbacks = await db.feedback.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(
-      { success: true, data: feedbacks },
-      { status: 200 }
-    );
+    return NextResponse.json(feedbacks, { status: 200 });
   } catch (reason) {
     const message =
       reason instanceof Error ? reason.message : "Something went wrong!";
