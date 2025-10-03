@@ -1,4 +1,3 @@
-import * as LabelPrimitive from "@radix-ui/react-label";
 import * as React from "react";
 import {
   FieldError,
@@ -52,7 +51,7 @@ export type FieldArrayProps = UseFieldArrayProps & {
 };
 export type FieldArray = (props: FieldArrayProps) => React.JSX.Element;
 
-export type FieldLabelProps = React.ComponentProps<typeof LabelPrimitive.Root>;
+export type FieldLabelProps = React.ComponentProps<"label">;
 
 export type FieldDescriptionProps = React.ComponentProps<"p">;
 
