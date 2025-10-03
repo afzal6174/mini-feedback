@@ -1,0 +1,66 @@
+import db from "@/lib/utils/prisma";
+import { NextResponse } from "next/server";
+
+export async function POST(request) {
+  try {
+    const contentType = request.headers.get("content-type") || "";
+
+    let data = {};
+
+    if (contentType.includes("application/json")) {
+      data = await request.json();
+    } else if (contentType.includes("form")) {
+      const formData = await request.formData();
+      data = Object.fromEntries(formData.entries());
+    } else {
+      return NextResponse.json(
+        {
+          success: false,
+          errors: { root: "Unsupported content type" }, // 👈 root error
+        },
+        { status: 415 }
+      );
+    }
+    const feedback = await db.feedback.create({
+      data: {
+        ...data,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Feedback sucessfully submitted", data: feedback },
+      { status: 201 }
+    );
+  } catch (reason) {
+    const message =
+      reason instanceof Error ? reason.message : "Something went wrong!";
+
+    return new NextResponse(
+      {
+        success: false,
+        errors: { root: message },
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    const feedbacks = await db.feedback.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(feedbacks, { status: 200 });
+  } catch (reason) {
+    const message =
+      reason instanceof Error ? reason.message : "Something went wrong!";
+
+    return new NextResponse(
+      {
+        success: false,
+        errors: { root: message },
+      },
+      { status: 500 }
+    );
+  }
+}

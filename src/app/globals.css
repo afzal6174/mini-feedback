@@ -193,7 +193,7 @@
   }
   .muted {
     @apply text-muted-foreground text-sm;
-  } /* secondary info, hint, faded subtitle, tooltip or help text */
+  }
 
   .table-container {
     @apply my-6 w-full overflow-y-auto;
