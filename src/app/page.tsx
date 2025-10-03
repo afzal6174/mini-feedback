@@ -1,3 +1,4 @@
+import { GET as getFeedbacks } from "@/app/api/feedback/route";
 import FeedbackForm from "@/components/all-forms/feedback-form";
 import PostCardSkeleton from "@/components/skeletons/post-skeleton";
 import {
@@ -17,8 +18,7 @@ type Post = {
 };
 
 export default function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const postsPromise: Promise<Post[]> = fetch(`${baseUrl}/api/feedback`)
+  const postsPromise: Promise<Post[]> = getFeedbacks()
     .then((res) => res.json())
     .catch((err) => {
       console.error("Fetch posts error:", err);
