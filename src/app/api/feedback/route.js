@@ -22,9 +22,18 @@ export async function POST(request) {
       );
     }
 
+    if (!data.name || !data.email || !data.feedback) {
+      return NextResponse.json(
+        { success: false, errors: { root: "All fields are required" } },
+        { status: 400 }
+      );
+    }
+
     const feedback = await db.feedback.create({
       data: {
-        ...data,
+        name: data.name,
+        email: data.email,
+        feedback: data.feedback,
       },
     });
 
