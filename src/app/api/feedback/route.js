@@ -16,11 +16,12 @@ export async function POST(request) {
       return NextResponse.json(
         {
           success: false,
-          errors: { root: "Unsupported content type" }, // 👈 root error
+          errors: { root: "Unsupported content type" },
         },
         { status: 415 }
       );
     }
+
     const feedback = await db.feedback.create({
       data: {
         ...data,
@@ -28,18 +29,18 @@ export async function POST(request) {
     });
 
     return NextResponse.json(
-      { message: "Feedback sucessfully submitted", data: feedback },
+      {
+        success: true,
+        message: "Feedback successfully submitted",
+        data: feedback,
+      },
       { status: 201 }
     );
   } catch (reason) {
     const message =
       reason instanceof Error ? reason.message : "Something went wrong!";
-
-    return new NextResponse(
-      {
-        success: false,
-        errors: { root: message },
-      },
+    return NextResponse.json(
+      { success: false, errors: { root: message } },
       { status: 500 }
     );
   }
@@ -50,16 +51,15 @@ export async function GET() {
     const feedbacks = await db.feedback.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(feedbacks, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: feedbacks },
+      { status: 200 }
+    );
   } catch (reason) {
     const message =
       reason instanceof Error ? reason.message : "Something went wrong!";
-
-    return new NextResponse(
-      {
-        success: false,
-        errors: { root: message },
-      },
+    return NextResponse.json(
+      { success: false, errors: { root: message } },
       { status: 500 }
     );
   }
